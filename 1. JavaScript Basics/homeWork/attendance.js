@@ -131,7 +131,7 @@ App = {
         });
     }
 }
-// App object
+// App object end
 
 
 // Entry point in application.
