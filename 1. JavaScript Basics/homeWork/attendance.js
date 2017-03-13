@@ -54,22 +54,31 @@ Attendance.prototype.check = function (callback) {
         console.log(nextToCheck.toString() + " here? y/n> ");
         
         // Simulate user input. Testing the app is faster.
-        setTimeout(function () {
-            
-            // Fake (random) user input.
-            var userInput = Math.random() < 0.2 ? "Y" : "N";
-            console.log(userInput);
-
-            if (userInput.trim().toUpperCase() === "Y") {
-                _this.present.push(nextToCheck);
-            } else {
-                _this.absent.push(nextToCheck);
-            }
+        _this.fakeUserInput(function (userInput) {
+            _this.processUserInput(userInput, nextToCheck);
             _this.check(callback);
-        }, 300);
+        });
     } else {
         callback();
     }
+};
+
+Attendance.prototype.processUserInput = function(userInput, nextToCheck) {
+    if (userInput.trim().toUpperCase() === "Y") {
+        this.present.push(nextToCheck);
+    } else {
+        this.absent.push(nextToCheck);
+    }
+};
+
+Attendance.prototype.fakeUserInput = function(processInput) {
+    setTimeout(function () {
+        // Fake (random) user input.
+        var yesPercentage = 0.8;
+        var userInput = Math.random() < yesPercentage ? "Y" : "N";
+        console.log(userInput);
+        processInput(userInput);
+    }, 300);
 };
 // Attendance class end
 
@@ -118,17 +127,26 @@ App = {
         // Set attendance records.
         var attendance = new Attendance(staffList.concat(studentList));
         // HINT: This code promises to gather attendance records and *then* save it to repostiory and *then* present message to the user.
-        attendance.check(function () {            
-            
-            // Save attendance records.
-            var repo = new AttendanceRepository();
-            repo.save(attendance, function () {
-                console.log("Attendance records saved. Attending/Count = " + attendance.present.length + "/" + attendance.enrolledAndStaff.length);
-            }, function (errorMessage) {
-                console.log("ERROR saving attendance records. Not much you can do. Sorry. :( Error details: " + errorMessage);
-            });
-        
+        attendance.check(function () {
+            App.saveAttendance(attendance, 
+                function () { App.showSuccessMessage(attendance) }, 
+                App.showErrorMessage
+            )
         });
+        
+    }, 
+
+    saveAttendance: function(attendance, success, error) {
+        var repo = new AttendanceRepository();
+        repo.save(attendance, success, error);
+    },
+
+    showSuccessMessage: function(attendance) {
+        console.log("Attendance records saved. Attending/Count = " + attendance.present.length + "/" + attendance.enrolledAndStaff.length);
+    },
+
+    showErrorMessage(errorMessage) {
+        console.log("ERROR saving attendance records. Not much you can do. Sorry. :( Error details: " + errorMessage);
     }
 }
 // App object end
