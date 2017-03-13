@@ -1,0 +1,26 @@
+{
+  "name": "es6-school",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "babel-node src/modules_and_classes/work/work.js",
+    "one-no-strict": "node src/modules_and_classes/01/noStrict.js",
+    "one-strict": "babel-node src/modules_and_classes/01/strict.js",
+    "two": "babel-node src/modules_and_classes/02/index.js",
+    "three": "babel-node src/modules_and_classes/03/index.js",
+    "four": "babel-node src/modules_and_classes/04/index.js",
+    "five": "babel-node src/modules_and_classes/05/index.js",
+    "six": "babel-node src/modules_and_classes/06/index.js",
+    "seven": "babel-node src/modules_and_classes/07/index.js",
+    "eight": "babel-node src/modules_and_classes/08/index.js",
+    "nine": "babel-node src/modules_and_classes/09/index.js",
+    "ten": "babel-node src/modules_and_classes/10/index.js",
+    "eleven": "babel-node src/modules_and_classes/11/index.js",
+    "twelve": "babel-node src/modules_and_classes/12/index.js",
+    "thirteen": "babel-node src/modules_and_classes/13/index.js",
+    "fourteen": "babel-node src/modules_and_classes/14/index.js"    
+  },
+  "devDependencies": {
+    "babel-cli": "^6.0.0",
+    "babel-preset-es2015-node": "^6.1.1"
+  }
+}
