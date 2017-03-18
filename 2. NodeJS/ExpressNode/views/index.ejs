@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= naslov %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <ul>
+        <% lista.forEach((item, index) => { %>
+            <li><%= item %></li>
+        <% } ); %>
+    </ul>
+    <% console.log('ovo je server'); %>
+    <script type="text/javascript">
+        console.log('ovo je logger');
+    </script>
+  </body>
+</html>

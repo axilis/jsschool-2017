@@ -10,6 +10,7 @@ const debug = require('debug')('axilisserver:server');
 const http = require('http');
 
 const indexRoutes = require('./routes/index.routes');
+const movieRoutes = require('./routes/movie.routes');
 
 const app = express();
 
@@ -40,6 +41,16 @@ app.use(cookieParser());
 // define routes
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRoutes);
+app.use('/movie', movieRoutes);
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://student:axilis@ds133260.mlab.com:33260/ajss2017',
+	(err) => {
+		if (err) {
+			return console.error(err);
+		}
+		console.log('Uspjesno spojeni na bazu!');
+	});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

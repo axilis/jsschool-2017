@@ -1,7 +1,10 @@
 'use strict';
 
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+
+const mongoose = require('mongoose');
+const Movie = require('../models/movie.model');
 
 router.get('/', (req, res, next) => {
 	res.render('index', {
@@ -10,9 +13,15 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/list', (req, res, next) => {
-	res.render('list', {
-		title: 'Express'
+	Movie.find({}).exec((_err, _movies) => {
+		if (_err) {
+			return res.sendStatus(500);
+		}
+		res.render('list', {
+			movies: _movies
+		});
 	});
+
 });
 
 module.exports = router;

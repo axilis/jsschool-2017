@@ -9,24 +9,21 @@
 		<h1>List of movies</h1>
 		<table style="width:100%">
 			<tr>
-				<th>Firstname</th>
-				<th>Lastname</th>
-				<th>Age</th>
+				<th>Number</th>
+				<th>Title</th>
+				<th>Rating</th>
 			</tr>
-			<tr>
-				<td>Jill</td>
-				<td>Smith</td>
-				<td>50</td>
-			</tr>
-			<tr>
-				<td>Eve</td>
-				<td>Jackson</td>
-				<td>94</td>
-			</tr>
+			<% movies.forEach((_movie, _index) => { %>
+				<tr>
+					<td><%= _index %></td>
+					<td><%= _movie.title %></td>
+					<td><%= _movie.rating %></td>
+				</tr>
+			<% }); %>
 		</table>
 		<div>
 			<h1>Add new movie</h1>
-			<form action="#" method="#">
+			<form action="/movie/save" method="POST">
 				<div class="padded">
 					Title
 					<br />
