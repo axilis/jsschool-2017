@@ -12,15 +12,24 @@ router.get('/', (req, res, next) => {
 	});
 });
 
-router.get('/list', (req, res, next) => {
-	Movie.find({}).exec((_err, _movies) => {
-		if (_err) {
-			return res.sendStatus(500);
-		}
-		res.render('list', {
-			movies: _movies
+router.get('/list', (req, res) => {
+	// Dio imena filma kao query parametar
+	const filter = req.query.filter || '';
+
+	Movie.find({
+			title: {
+				$regex: filter,
+				$options: 'i'
+			}
+		})
+		.exec((_err, _movies) => {
+			if (_err) {
+				return res.sendStatus(500);
+			}
+			res.render('list', {
+				movies: _movies
+			});
 		});
-	});
 
 });
 
