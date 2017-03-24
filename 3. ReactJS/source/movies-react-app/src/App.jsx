@@ -13,12 +13,21 @@ class App extends Component {
     this.state = {
       movies: [],
       isLoading: false,
-      isError: false
+      isError: false,
+      // pull the state up, we'll need this kind of power in the App component!
+      // since filter text needs to be reset when e.g. movie is added,
+      // we'll have a hard time if the filter text state is burried in the filter box component. 
+      // To communicate "hey, change your state of the filter text to blank" down to child -> not so easy.
+      // if the child does not have state and just blindly listens to parent (via props),
+      // parent has all the control it needs. Just set the state of filter text on the parent,
+      // and child blindly listens.
+      filterText: ""
     };
     // ensuring our this in set movie object is correct
     // no matter who is calling it
     this.setMovieWatched = this.setMovieWatched.bind(this);
     this.deleteMovie = this.deleteMovie.bind(this);
+    this.handleFilterInputChange = this.handleFilterInputChange.bind(this);
   }
 
   componentDidMount() {
@@ -70,13 +79,24 @@ class App extends Component {
     });
   }
 
+  handleFilterInputChange(event) {
+    this.setState({
+      filterText: event.target.value
+    });
+  }
+
+  getFilteredMovies(){
+    var filter = this.state.filterText.toLowerCase();
+    return this.state.movies.filter(m => m.title && m.title.toLowerCase().startsWith(filter));
+  }
+
   render() {
     return (
       <div className="container">
         { this.state.isError && <div style={ { color: "red" } }>Error :(</div> }
         <Header text="My movie list" />
-        <FilterBox />
-        <MovieList movies={ this.state.movies } setMovieWatchChangedEvent={ this.setMovieWatched } deleteMovieEvent={this.deleteMovie} />
+        <FilterBox value={this.state.filterText} inputChangedEvent={this.handleFilterInputChange} />
+        <MovieList movies={ this.getFilteredMovies() } setMovieWatchChangedEvent={ this.setMovieWatched } deleteMovieEvent={ this.deleteMovie } />
         <AddMovieBox />
         <Footer company="Axilis JS School" />
         { this.state.isLoading && <Loading type='balls' color='#000000' /> }
