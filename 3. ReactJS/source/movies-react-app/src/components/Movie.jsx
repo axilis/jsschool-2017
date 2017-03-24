@@ -5,14 +5,14 @@ class Movie extends Component {
     return (
       <tr>
         <td>
-          1.
+          { this.props.index + 1 }
         </td>
         <td>
-          Matrix
+          { this.props.movie.title }
         </td>
         <td>
-          <button className="btn btn-default">
-            <span className="glyphicon glyphicon-ok"></span>
+          <button onClick={ () => this.props.setMovieWatchChangedEvent(this.props.movie._id, !this.props.movie.isWatched) } className="btn btn-default">
+            <span className={ this.props.movie.isWatched ? "glyphicon glyphicon-ok" : "glyphicon glyphicon-minus" }></span>
           </button>
         </td>
         <td>
