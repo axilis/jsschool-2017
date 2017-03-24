@@ -5,6 +5,7 @@ import MovieList from './components/MovieList.jsx';
 import FilterBox from './components/FilterBox.jsx';
 import AddMovieBox from './components/AddMovieBox.jsx';
 import Loading from 'react-loading';
+import uuid from 'uuid/v4';
 
 class App extends Component {
   constructor(props) {
@@ -21,13 +22,16 @@ class App extends Component {
       // if the child does not have state and just blindly listens to parent (via props),
       // parent has all the control it needs. Just set the state of filter text on the parent,
       // and child blindly listens.
-      filterText: ""
+      filterText: "",
+      addMovieText: ""
     };
     // ensuring our this in set movie object is correct
     // no matter who is calling it
     this.setMovieWatched = this.setMovieWatched.bind(this);
     this.deleteMovie = this.deleteMovie.bind(this);
     this.handleFilterInputChange = this.handleFilterInputChange.bind(this);
+    this.handleAddMovieInputChange = this.handleAddMovieInputChange.bind(this);
+    this.addMovie = this.addMovie.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +50,21 @@ class App extends Component {
       movies: movies
     });
   }
+
+  addMovie() {
+    let newMovie = {
+      _id: uuid(),
+      title: this.state.addMovieText,
+      isWatched: false
+    };
+
+    this.setState({
+      movies: [...this.state.movies, newMovie],
+      addMovieText: "",
+      filterText: ""
+    });
+  }
+
 
   deleteMovie(_id) {
     this.setState({
@@ -85,7 +104,13 @@ class App extends Component {
     });
   }
 
-  getFilteredMovies(){
+  handleAddMovieInputChange(event) {
+    this.setState({
+      addMovieText: event.target.value
+    });
+  }
+
+  getFilteredMovies() {
     var filter = this.state.filterText.toLowerCase();
     return this.state.movies.filter(m => m.title && m.title.toLowerCase().startsWith(filter));
   }
@@ -95,9 +120,9 @@ class App extends Component {
       <div className="container">
         { this.state.isError && <div style={ { color: "red" } }>Error :(</div> }
         <Header text="My movie list" />
-        <FilterBox value={this.state.filterText} inputChangedEvent={this.handleFilterInputChange} />
+        <FilterBox value={ this.state.filterText } inputChangedEvent={ this.handleFilterInputChange } />
         <MovieList movies={ this.getFilteredMovies() } setMovieWatchChangedEvent={ this.setMovieWatched } deleteMovieEvent={ this.deleteMovie } />
-        <AddMovieBox />
+        <AddMovieBox value={ this.state.addMovieText } inputChangedEvent={ this.handleAddMovieInputChange } addMovieEvent={ this.addMovie } />
         <Footer company="Axilis JS School" />
         { this.state.isLoading && <Loading type='balls' color='#000000' /> }
       </div>

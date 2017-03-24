@@ -4,8 +4,8 @@ class AddMovieBox extends Component {
     render() {
         return (
             <div>
-              Add movie: <input type="text"/><br/>
-              <button className="btn btn-primary">Add</button>
+              Add movie: <input onChange={this.props.inputChangedEvent} value={this.props.value} type="text"/><br/>
+              <button onClick={this.props.addMovieEvent} className="btn btn-primary">Add</button>
             </div>
             );
     }
