@@ -5,7 +5,7 @@ import Movie from './Movie.jsx';
 class MovieList extends Component {
   render() {
     var movieComponents = this.props.movies.map((m, index) => {
-      return (<Movie key={ m._id } movie={ m } index={ index } setMovieWatchChangedEvent={ this.props.setMovieWatchChangedEvent }></Movie>);
+      return (<Movie key={ m._id } movie={ m } index={ index } setMovieWatchChangedEvent={ this.props.setMovieWatchChangedEvent } deleteMovieEvent={this.props.deleteMovieEvent}></Movie>);
     });
 
     return (

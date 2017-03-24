@@ -16,7 +16,7 @@ class Movie extends Component {
           </button>
         </td>
         <td>
-          <button className="btn btn-danger">
+          <button className="btn btn-danger" onClick={()=> this.props.deleteMovieEvent(this.props.movie._id)}>
             <span className="glyphicon glyphicon-trash"></span>
           </button>
         </td>

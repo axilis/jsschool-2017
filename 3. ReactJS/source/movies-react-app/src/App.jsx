@@ -18,6 +18,7 @@ class App extends Component {
     // ensuring our this in set movie object is correct
     // no matter who is calling it
     this.setMovieWatched = this.setMovieWatched.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
   componentDidMount() {
@@ -34,6 +35,12 @@ class App extends Component {
 
     this.setState({
       movies: movies
+    });
+  }
+
+  deleteMovie(_id) {
+    this.setState({
+      movies: this.state.movies.filter(m => m._id !== _id)
     });
   }
 
@@ -55,7 +62,7 @@ class App extends Component {
       //   isWatched: change.isWatched
       // };
 
-      // return newMovieObject;
+    // return newMovieObject;
     });
 
     this.setState({
@@ -69,7 +76,7 @@ class App extends Component {
         { this.state.isError && <div style={ { color: "red" } }>Error :(</div> }
         <Header text="My movie list" />
         <FilterBox />
-        <MovieList movies={ this.state.movies } setMovieWatchChangedEvent={this.setMovieWatched} />
+        <MovieList movies={ this.state.movies } setMovieWatchChangedEvent={ this.setMovieWatched } deleteMovieEvent={this.deleteMovie} />
         <AddMovieBox />
         <Footer company="Axilis JS School" />
         { this.state.isLoading && <Loading type='balls' color='#000000' /> }
