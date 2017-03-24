@@ -35,20 +35,28 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // fake going to the "server"... for now
-    let movies = [{
-      _id: 1,
-      title: "Matrix",
-      isWatched: true
-    }, {
-      _id: 2,
-      title: "Matrix 2",
-      isWatched: false
-    }]
 
     this.setState({
-      movies: movies
+      isError: false,
+      isLoading: true
     });
+
+    let _this = this;
+
+    fetch('http://localhost:3000/movie/all').then((response) => response.json())
+      .then((movies) => {
+        _this.setState({
+          movies: movies,
+          isLoading: false
+        });
+      })
+      .catch((error) => {
+        _this.setState({
+          movies: [],
+          isLoading: false,
+          isError: true
+        });
+      });
   }
 
   addMovie() {
