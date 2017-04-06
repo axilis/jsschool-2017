@@ -35,7 +35,7 @@ app.set('view engine', 'ejs');
 
 // app.use(Raven.requestHandler());
 app.use(function(req,res,next){
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '127.0.0.1');
 	next();
 });
 

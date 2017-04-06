@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 import MovieComponent from './MovieComponent';
 import LoginComponent from './LoginComponent';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+
+const NotFound = () => {
+  return (
+    <h1>This page is missing...</h1>
+  );
+}
 
 class App extends Component {
 
@@ -10,8 +16,11 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Route exact path="/" component={ MovieComponent }/>
-          <Route exact path="/login" component={ LoginComponent }/>
+          <Switch>
+            <Route exact path="/" component={ MovieComponent }/>
+            <Route exact path="/login" component={ LoginComponent }/>
+            <Route path="*" component={ NotFound } />
+          </Switch>
         </div>
       </Router>
     );
