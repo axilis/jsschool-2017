@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>List of movies</title>
+		<link rel='stylesheet' href='/stylesheets/style.css' />
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	</head>
+	<body>
+		<h1>List of movies</h1>
+		<table style="width:100%">
+			<tr>
+				<th>Number</th>
+				<th>Title</th>
+				<th>Rating</th>
+			</tr>
+			<% movies.forEach((_movie, _index) => { %>
+				<tr>
+					<td><%= _index %></td>
+					<td><%= _movie.title %></td>
+					<td><%= _movie.rating %></td>
+				</tr>
+			<% }); %>
+		</table>
+		<div>
+			<h1>Add new movie</h1>
+			<form action="/movie/save" method="POST">
+				<div class="padded">
+					Title
+					<br />
+					<input type="text" name="title">
+				</div>
+				<div class="padded">
+					Rating
+					<br />
+					<input type="text" name="rating">
+				</div>
+				<div class="padded">
+					<input type="submit" value="Submit">
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
