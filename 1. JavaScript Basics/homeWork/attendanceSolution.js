@@ -11,11 +11,7 @@
 // setTimeout promise wrapper.
 class Timeout {
     static set(msDelay) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve();
-            }, msDelay);
-        });
+        return new Promise(resolve => setTimeout(resolve, msDelay));
     }
 }
 
@@ -51,7 +47,7 @@ class Staff extends Person {
 class Attendance {
     constructor(enrolledAndStaff) {
         this.enrolledAndStaff = enrolledAndStaff;
-        this.notProcessed = enrolledAndStaff.slice(0);
+        this.notProcessed = [...enrolledAndStaff];
         this.present = [];
         this.absent = [];
     }
@@ -95,9 +91,9 @@ class Attendance {
 
 class AttendanceRepository {
     save(attendance) {
-        // Simulate saving to server. Saving is async operation.
-        const successPrecentage = 0.7;
-        const isSuccess = Math.random() < successPrecentage;
+        // Simulate saving to server. Saving is an async operation.
+        const successPercentage = 0.7;
+        const isSuccess = Math.random() < successPercentage;
         if (isSuccess) {
             return Timeout.set(2000);
         } else {
@@ -124,7 +120,7 @@ class App {
         ];
 
         // Set attendance records.
-        const attendance = new Attendance(staffList.concat(studentList));
+        const attendance = new Attendance([...staffList, ...studentList]);
         attendance.check().
             then(() => App.saveAttendance(attendance)).
             then(() => App.showSuccessMessage(attendance), App.showErrorMessage);
