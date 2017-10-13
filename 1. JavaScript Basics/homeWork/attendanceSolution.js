@@ -11,7 +11,7 @@
 // setTimeout promise wrapper.
 class Timeout {
     static set(msDelay) {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             setTimeout(() => {
                 resolve();
             }, msDelay);
