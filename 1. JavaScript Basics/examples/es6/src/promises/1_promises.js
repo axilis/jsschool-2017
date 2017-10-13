@@ -172,7 +172,7 @@ function doAsync() {
         console.log("in promise code");
         setTimeout(function () {
             console.log("rejecting...");
-            reject("Nope");
+            reject("It's a no go!");
         }, 2000);
     });
 }
@@ -181,7 +181,7 @@ doAsync().catch(function (reason) {
 });
 //in promise code
 //rejecting...
-//Error: Nope
+//Error: It's a no go!
 
 
 
@@ -216,12 +216,46 @@ doAsync().then(function (value) {
 //Success: Ok
 
 
-//9. Chaining promises from another angle. 
+//8.1 More readable chaining. Stay with this approach whenever possible.
 function doAnotherAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in another promise code");
         setTimeout(function () {
-            reject("Nope");
+            resolve("Ok");
+        }, 1000);
+    });
+}
+
+function doAsync() {
+    return new Promise(function (resolve, reject) {
+        console.log("in promise code");
+        setTimeout(function () {
+            resolve();
+        }, 2000);
+    });
+}
+
+doAsync()
+    .then(doAnotherAsync())
+    .then(function (value) {
+        console.log("Success: " + value);
+    })
+    .catch(function (reason) {
+        console.log("Error: " + reason);
+    });
+
+//in promise code
+//in another promise code
+//Success: Ok
+
+
+
+//9. Chaining promises with rejection.
+function doAnotherAsync() {
+    return new Promise(function (resolve, reject) {
+        console.log("in another promise code");
+        setTimeout(function () {
+            reject("It's a no go!");
         }, 1000);
     });
 }
@@ -243,7 +277,41 @@ doAsync().then(function (value) {
 
 //in promise code
 //in another promise code
-//Error: Nope
+//Error: It's a no go!
+
+
+// 9.1 Chaining promisses with rejection that is more readable. Stay with this approach whenver possible.
+function doAnotherAsync() {
+    return new Promise(function (resolve, reject) {
+        console.log("in another promise code");
+        setTimeout(function () {
+            reject("It's a no go!");
+        }, 1000);
+    });
+}
+
+function doAsync() {
+    return new Promise(function (resolve, reject) {
+        console.log("in promise code");
+        setTimeout(function () {
+            resolve();
+        }, 2000);
+    });
+}
+
+doAsync()
+    // Note that we're passing a function. We're not invoking it.
+    .then(doAnotherAsync)
+    .then(function (value) {
+        console.log("Success: " + value);
+    })
+    .catch(function (reason) {
+        console.log("Error: " + reason);
+    });
+
+//in promise code
+//in another promise code
+//Error: It's a no go!
 
 
 
@@ -278,6 +346,7 @@ function doAnotherAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in another promise code");
         setTimeout(function () {
+            console.log("resolved 2");
             resolve("OK 2");
         }, 1000);
     });
@@ -287,22 +356,25 @@ function doAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in promise code");
         setTimeout(function () {
+            console.log("resolved 1");
             resolve("OK 1");
         }, 1500);
     });
 }
 
 
-Promise.all([doAnotherAsync(), doAsync()]).then(function (valuse) {
-    console.log("OK");
+Promise.all([doAnotherAsync(), doAsync()]).then(function (values) {
+    console.log("Resolved values: " + JSON.stringify(values));
 }, function (reason) {
-    console.log("Nope");
+    console.log("It's a no go!");
 });
 
 
 //in another promise code
 //in promise code
-//OK
+//resolved 2
+//resolved 1
+//Resolved values: ["OK 2","OK 1"]
 
 
 //13. One reject resolves in reject for all promises.
@@ -310,6 +382,7 @@ function doAnotherAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in another promise code");
         setTimeout(function () {
+            console.log("resolved 2");
             resolve("OK 2");
         }, 1000);
     });
@@ -319,7 +392,8 @@ function doAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in promise code");
         setTimeout(function () {
-            reject("Nope 1");
+            console.log("rejected 1");
+            reject("It's a no go! 1");
         }, 1500);
     });
 }
@@ -328,13 +402,16 @@ function doAsync() {
 Promise.all([doAnotherAsync(), doAsync()]).then(function (valuse) {
     console.log("OK");
 }, function (reason) {
-    console.log("Nope");
+    console.log("It's a no go!");
 });
 
 
 //in another promise code
 //in promise code
-//Nope
+//It's a no go!
+//resolved 2
+//rejected 1
+//It's a no go!
 
 
 //14.1 Winner takes it all. Primise is resolved according to winner resolution.
@@ -351,7 +428,7 @@ function doAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in promise code");
         setTimeout(function () {
-            reject("Nope 1");
+            reject("It's a no go! 1");
         }, 1500);
     });
 }
@@ -360,7 +437,7 @@ function doAsync() {
 Promise.race([doAnotherAsync(), doAsync()]).then(function (valuse) {
     console.log("OK");
 }, function (reason) {
-    console.log("Nope");
+    console.log("It's a no go!");
 });
 
 
@@ -374,7 +451,7 @@ function doAnotherAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in another promise code");
         setTimeout(function () {
-            reject("Nope 2");
+            reject("It's a no go! 2");
         }, 1000);
     });
 }
@@ -392,10 +469,10 @@ function doAsync() {
 Promise.race([doAnotherAsync(), doAsync()]).then(function (valuse) {
     console.log("OK");
 }, function (reason) {
-    console.log("Nope");
+    console.log("It's a no go!");
 });
 
 
 //in another promise code
 //in promise code
-//Nope
+//It's a no go!
