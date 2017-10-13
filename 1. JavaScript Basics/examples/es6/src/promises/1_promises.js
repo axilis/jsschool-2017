@@ -216,7 +216,7 @@ doAsync().then(function (value) {
 //Success: Ok
 
 
-//9. Chaining promises from antather angle. 
+//9. Chaining promises from another angle. 
 function doAnotherAsync() {
     return new Promise(function (resolve, reject) {
         console.log("in another promise code");
