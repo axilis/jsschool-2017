@@ -57,21 +57,19 @@ class Attendance {
     }
 
     check() {
-        return new Promise(resolve => {
-            if (this.notProcessed.length) {
-                const nextToCheck = this.notProcessed.pop();
-                console.log(`${nextToCheck.toString()} here? y/n> `);
-
-                // Simulate user input. Testing the app is faster.
-                this.fakeUserInput().
-                    then((userInput) => this.processUserInput(userInput, nextToCheck)).
-                    then(() => this.check()).
-                    then(resolve);
-
-            } else {
-                resolve();
-            }
-        });
+        if (this.notProcessed.length) {
+            const nextToCheck = this.notProcessed.pop();
+            console.log(`${nextToCheck.toString()} here? y/n> `);
+        
+            // Simulate user input. Testing the app is faster.
+            return this.fakeUserInput().
+                then(userInput => this.processUserInput(userInput, nextToCheck)).
+                // Arrow function is mandatory. Check what happens if following line is uncommented.
+                // .then(this.check)
+                then(() => this.check());
+        } else {
+            return Promise.resolve();
+        }
     }
 
     processUserInput(userInput, nextToCheck) {
@@ -80,20 +78,17 @@ class Attendance {
         } else {
             this.absent.push(nextToCheck);
         }
-
     }
 
     fakeUserInput() {
-        return new Promise(resolve => {
-            Timeout.set(300).
-                then(() => {
-                    // Fake (random) user input.
-                    const yesPercentage = 0.8;
-                    const userInput = Math.random() < yesPercentage ? "Y" : "N";
-                    console.log(userInput);
-                    resolve(userInput);
-                });
-        });
+        return Timeout.set(300).
+            then(() => {
+                // Fake (random) user input.
+                const yesPercentage = 0.8;
+                const userInput = Math.random() < yesPercentage ? "Y" : "N";
+                console.log(userInput);
+                return userInput;
+            });
     }
 }
 
@@ -101,16 +96,13 @@ class Attendance {
 class AttendanceRepository {
     save(attendance) {
         // Simulate saving to server. Saving is async operation.
-
-        return new Promise((resolve, reject) => {
-            const successPrecentage = 0.7;
-            const isSuccess = Math.random() < successPrecentage;
-            if (isSuccess) {
-                Timeout.set(2000).then(resolve);
-            } else {
-                Timeout.set(500).then(() => reject("500, INTERAL SERVER ERROR"));
-            }
-        });
+        const successPrecentage = 0.7;
+        const isSuccess = Math.random() < successPrecentage;
+        if (isSuccess) {
+            return Timeout.set(2000);
+        } else {
+            Timeout.set(500).then(() => Promise.reject("500, INTERAL SERVER ERROR"));
+        }
     };
 
 }
