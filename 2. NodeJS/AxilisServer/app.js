@@ -6,6 +6,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+// TODOVM: What is this used for?
 const debug = require('debug')('axilisserver:server');
 const http = require('http');
 
@@ -18,6 +19,7 @@ const app = express();
 function normalizePort(val) {
 	var port = parseInt(val, 10);
 	if (isNaN(port)) {
+		// TODOVM: How is this important in school? How is this important elsewhere?
 		// named pipe
 		return val;
 	}
@@ -31,6 +33,7 @@ function normalizePort(val) {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// TODOVM: When is this used?
 app.use(function(req,res,next){
     res.setHeader('Access-Control-Allow-Origin', '*');
 	next();
@@ -68,6 +71,7 @@ app.use(function(req, res, next) {
 app.use((err, req, res, next) => {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
+	// TODOVM: Where is app environment set to development?
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
 	// render the error page
@@ -79,6 +83,7 @@ app.use((err, req, res, next) => {
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+// TODOVM: Express server isn't used after all, is it?
 // Create HTTP server.
 const server = http.createServer(app);
 

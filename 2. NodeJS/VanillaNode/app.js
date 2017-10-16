@@ -1,26 +1,24 @@
 'use strict';
 
-const testFolder = './';
+const testFolder = './ant';
 const fs = require('fs');
 
-const q = require('q');
+// const q = require('q');
 
 function getFilenames() {
-	let deferred = q.defer();
-	fs.readdir(testFolder, (err, files) => {
-		if (err) {
-			deferred.reject('Ajoj');
-		} else {
-			deferred.resolve(files);
-		}
+	return new Promise((resolve, reject) => {
+		fs.readdir(testFolder, (err, files) => {
+			if (err) return reject('Ajoj');
+			
+			return resolve(files);
+		});
 	});
-	return deferred.promise;
 }
 
 getFilenames()
-	.then((files) => {
+	.then(files => {
 		console.log('Prvi prolaz', files);
 		return getFilenames();
 	})
-	.then((files) => (console.log('Drugi prolaz', files)))
-	.catch((err) => (console.log(err)));
+	.then(files => (console.log('Drugi prolaz', files)))
+	.catch(err => (console.log(err)));

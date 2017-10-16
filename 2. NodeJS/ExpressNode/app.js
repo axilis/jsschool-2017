@@ -1,3 +1,5 @@
+// TODOVM: From which version of node does ES6 Import syntax work?
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -18,6 +20,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+// TODOVM: What's extended?
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -27,11 +30,13 @@ app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  // TODOVM: Error doesn't have status field defined.
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
+// TODOVM: How come that 404 middleware uses different signature than error middleware.
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
